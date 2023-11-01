@@ -1,7 +1,6 @@
 import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import axios from 'axios';
-import knex from 'knex';
 import { Sequelize, DataTypes } from 'sequelize';
 
 const app = express();
