@@ -14,6 +14,28 @@ La base de datos de este proyecto está alojada en Google Cloud. A continuación
 - Punto de enlace (Endpoint): `34.151.222.189`
 - Puerto: `5432`
 
+### Instalación
+
+Para ejecutar este proyecto localmente, sigue estos pasos:
+
+1. Clona este repositorio en tu máquina:
+
+   `git clone https://github.com/francoschiaffino/test_currency_bird.git`
+
+Navega al directorio del proyecto:
+
+`cd test_currency_bird`
+
+Instala las dependencias:
+
+`yarn install`
+
+Ejecuta la aplicación:
+
+`yarn start`
+
+La aplicación se ejecutará en `http://localhost:3000`.
+
 
 ### Endpoints
 
@@ -41,5 +63,5 @@ Este endpoint se utiliza para enviar un pago a GeneralPayment. Debes enviar los 
 
 {
   "transferCode": "franco.schiaffino@uc.cl",
-  "amount": "100"
+  "amount": 100
 }
