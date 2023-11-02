@@ -9,7 +9,7 @@ Este proyecto es un servidor Node.js que proporciona dos endpoints para interact
 
 ### Base de Datos en Google Cloud
 
-La base de datos de este proyecto está alojada en Google Cloud. A continuación, se muestran las credenciales y la información de la base de datos:
+La base de datos de este proyecto está alojada en Google Cloud. A continuación, se muestra la información de la base de datos:
 
 - Punto de enlace (Endpoint): `34.151.222.189`
 - Puerto: `5432`
