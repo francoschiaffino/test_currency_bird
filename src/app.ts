@@ -3,18 +3,21 @@ import bodyParser from 'body-parser';
 import axios from 'axios';
 import { Sequelize, DataTypes } from 'sequelize';
 
+const fs = require('fs');
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
+
 // Configuración de la base de datos
 const sequelize = new Sequelize({
     dialect: 'postgres',
-    host: 'localhost',
-    username: 'franco_schiaffino',
-    password: 'phineas456',
-    database: 'currency_bird_project',
+    host: '34.151.222.189',
+    username: 'currency_user',
+    password: 'currency123',
+    database: 'currencydb',
+    port: 5432,
   });
 
 const Pago = sequelize.define('Pago', {
@@ -46,33 +49,26 @@ sequelize.sync();
 // Endpoint para obtener información de un pago en GeneralPayment
 app.get('/obtener-informacion-pago', async (req: Request, res: Response) => {
   try {
-    // Obtén los parámetros de la solicitud, como el email y transferCode
     const email = 'franco.schiaffino@uc.cl'
     const transferCode = 'franco.schiaffino@uc.cl'
 
-    // Asegúrate de que se proporcionen los parámetros necesarios en la solicitud
     if (!email || !transferCode) {
       return res.status(400).send('Faltan parámetros en la solicitud.');
     }
 
-    // Lógica para obtener un nuevo token de acceso
     const token = await obtenerNuevoToken();
 
-    // Verifica si se pudo obtener un token válido
     if (!token) {
       return res.status(500).send('Error al obtener un nuevo token de acceso.');
     }
 
-    // Realiza una solicitud a la API de GeneralPayment para obtener información del pago
-    const apiUrl = `https://dev.developers-test.currencybird.cl/payment?email=${email}&transferCode=${transferCode}`;
+    const apiUrl = `https://prod.developers-test.currencybird.cl/payment?email=${email}&transferCode=${transferCode}`;
     const response = await axios.get(apiUrl, {
       headers: {
         Authorization: token,
       },
     });
 
-    // Maneja la respuesta de la API de GeneralPayment
-    // Puedes procesar la respuesta y enviarla como respuesta a la solicitud actual
     const paymentInfo = response.data;
     console.log('Información del pago:', paymentInfo);
     res.status(200).json(paymentInfo);
@@ -87,14 +83,13 @@ async function obtenerGet (transferCode: string) {
     try {
         console.log('transferCode:', transferCode);
         const token = await obtenerNuevoToken();
-        const apiUrl = `https://dev.developers-test.currencybird.cl/payment?email=${transferCode}&transferCode=${transferCode}`
+        const apiUrl = `https://prod.developers-test.currencybird.cl/payment?email=${transferCode}&transferCode=${transferCode}`
         const response = await axios.get(apiUrl,{
             headers: {
                 Authorization: token,
             },
             });
         if (response.status === 200) {
-            // console.log('Response obtenido:', response.data);
             return response.data;
         }
         return null;
@@ -103,10 +98,11 @@ async function obtenerGet (transferCode: string) {
         return null;
       }
     };
+
 // Función para obtener un nuevo token de acceso
 async function obtenerNuevoToken() {
     try {
-      const tokenUrl = 'https://dev.developers-test.currencybird.cl/token?email=franco.schiaffino@uc.cl';
+      const tokenUrl = 'https://prod.developers-test.currencybird.cl/token?email=franco.schiaffino@uc.cl';
       const response = await axios.get(tokenUrl);
   
       console.log('Estado de la respuesta:', response.status);
@@ -131,22 +127,16 @@ app.post('/enviar-pago', async (req: Request, res: Response) => {
   try {
     const { transferCode, amount } = req.body;
     const get = await obtenerGet(transferCode);
-    const get_2 = "TRANSFER_NOT_FOUND";
     console.log('get:', get)
-    if (get_2 == "TRANSFER_NOT_FOUND") { 
+    if (get == "TRANSFER_NOT_FOUND") { 
     console.log('transferCode:', transferCode);
     console.log('amount:', amount);
     const data = {
         transferCode: `${transferCode}`,
         amount: amount,
     }
-    // Realiza la llamada a GeneralPayment aquí
-
-    // Asegúrate de manejar errores adecuadamente
-
-    // Almacena la información del pago en tu base de datos local
     const token = await obtenerNuevoToken();
-    const apiUrl = "https://dev.developers-test.currencybird.cl/payment?email=franco.schiaffino@uc.cl&transferCode=franco.schiaffino@uc.cl"
+    const apiUrl = "https://prod.developers-test.currencybird.cl/payment?email=franco.schiaffino@uc.cl&transferCode=franco.schiaffino@uc.cl"
     const response = await axios.post(apiUrl, data,{
         headers: {
             Authorization: token,
@@ -175,7 +165,6 @@ app.post('/enviar-pago', async (req: Request, res: Response) => {
   }
 });
 
-// Otras rutas y controladores según sea necesario
 
 app.listen(port, () => {
   console.log(`Servidor en funcionamiento en el puerto ${port}`);
