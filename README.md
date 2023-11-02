@@ -14,32 +14,14 @@ La base de datos de este proyecto está alojada en Google Cloud. A continuación
 - Punto de enlace (Endpoint): `34.151.222.189`
 - Puerto: `5432`
 
-### Instalación
+### Despliegue en Render
 
-Para ejecutar este proyecto localmente, sigue estos pasos:
-
-1. Clona este repositorio en tu máquina:
-
-   `git clone https://github.com/francoschiaffino/test_currency_bird.git`
-
-Navega al directorio del proyecto:
-
-`cd test_currency_bird`
-
-Instala las dependencias:
-
-`yarn install`
-
-Ejecuta la aplicación:
-
-`yarn start`
-
-La aplicación se ejecutará en `http://localhost:3000`.
-
+Este proyecto ha sido alojado en Render y se puede acceder en el siguiente enlace: [Test Currency Bird en Render](https://test-currencybird.onrender.com/).
 
 ### Endpoints
 
-#### /obtener-informacion-pago (GET) 
+#### /obtener-informacion-pago (GET)
+
 Este endpoint se utiliza para obtener información de un pago en GeneralPayment. Debes proporcionar los siguientes parámetros:
 
 1. email: El correo electrónico asociado al pago.
@@ -47,19 +29,19 @@ Este endpoint se utiliza para obtener información de un pago en GeneralPayment.
 
 ##### Ejemplo de solicitud GET:
 
-`GET http://localhost:3000/obtener-informacion-pago?email=franco.schiaffino@uc.cl&transferCode=franco.schiaffino@uc.cl`
+GET https://test-currencybird.onrender.com/obtener-informacion-pago?email=franco.schiaffino@uc.cl&transferCode=franco.schiaffino@uc.cl
 
-##### /enviar-pago (POST)` ####
 
-Este endpoint se utiliza para enviar un pago a GeneralPayment. Debes enviar los siguientes datos en el cuerpo de la solicitud:
+#### /enviar-pago (POST)
 
-1. transferCode: El código de transferencia del pago.
-2. amount: La cantidad del pago.
+Este endpoint se utiliza para enviar un pago a GeneralPayment. Sin embargo, ten en cuenta que solo se realiza un pago si el correo no ha realizado un pago antes. Debes enviar los siguientes datos en el cuerpo de la solicitud:
+
+1. transferCode: El código de transferencia del pago,
+2. amount: La cantidad del pago
 
 ##### Ejemplo de solicitud POST:
 
-
-`POST http://localhost:3000/enviar-pago`
+POST https://test-currencybird.onrender.com/enviar-pago
 
 {
   "transferCode": "franco.schiaffino@uc.cl",

@@ -129,7 +129,7 @@ app.post('/enviar-pago', (req, res) => __awaiter(void 0, void 0, void 0, functio
         const { transferCode, amount } = req.body;
         const get = yield obtenerGet(transferCode);
         console.log('get:', get);
-        if (get == "TRANSFER_NOT_FOUND") {
+        if (get_2 == "TRANSFER_NOT_FOUND") {
             console.log('transferCode:', transferCode);
             console.log('amount:', amount);
             const data = {
