@@ -60,7 +60,7 @@ app.get('/obtener-informacion-pago', (req, res) => __awaiter(void 0, void 0, voi
         if (!email || !transferCode) {
             return res.status(400).send('Faltan parámetros en la solicitud.');
         }
-        const token = yield obtenerNuevoToken();
+        const token = yield obtenerNuevoToken(transferCode);
         if (!token) {
             return res.status(500).send('Error al obtener un nuevo token de acceso.');
         }
@@ -83,7 +83,7 @@ function obtenerGet(transferCode) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             console.log('transferCode:', transferCode);
-            const token = yield obtenerNuevoToken();
+            const token = yield obtenerNuevoToken(transferCode);
             const apiUrl = `https://prod.developers-test.currencybird.cl/payment?email=${transferCode}&transferCode=${transferCode}`;
             const response = yield axios_1.default.get(apiUrl, {
                 headers: {
@@ -103,10 +103,10 @@ function obtenerGet(transferCode) {
 }
 ;
 // Función para obtener un nuevo token de acceso
-function obtenerNuevoToken() {
+function obtenerNuevoToken(transferCode) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const tokenUrl = 'https://prod.developers-test.currencybird.cl/token?email=franco.schiaffino@uc.cl';
+            const tokenUrl = `https://prod.developers-test.currencybird.cl/token?email=${transferCode}`;
             const response = yield axios_1.default.get(tokenUrl);
             console.log('Estado de la respuesta:', response.status);
             console.log('Contenido de la respuesta:', response.data);
@@ -136,8 +136,8 @@ app.post('/enviar-pago', (req, res) => __awaiter(void 0, void 0, void 0, functio
                 transferCode: `${transferCode}`,
                 amount: amount,
             };
-            const token = yield obtenerNuevoToken();
-            const apiUrl = "https://prod.developers-test.currencybird.cl/payment?email=franco.schiaffino@uc.cl&transferCode=franco.schiaffino@uc.cl";
+            const token = yield obtenerNuevoToken(transferCode);
+            const apiUrl = `https://prod.developers-test.currencybird.cl/payment?email=${transferCode}&transferCode=${transferCode}`;
             const response = yield axios_1.default.post(apiUrl, data, {
                 headers: {
                     Authorization: token,

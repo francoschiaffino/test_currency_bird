@@ -56,7 +56,7 @@ app.get('/obtener-informacion-pago', async (req: Request, res: Response) => {
       return res.status(400).send('Faltan parámetros en la solicitud.');
     }
 
-    const token = await obtenerNuevoToken();
+    const token = await obtenerNuevoToken(transferCode);
 
     if (!token) {
       return res.status(500).send('Error al obtener un nuevo token de acceso.');
@@ -82,7 +82,7 @@ app.get('/obtener-informacion-pago', async (req: Request, res: Response) => {
 async function obtenerGet (transferCode: string) {
     try {
         console.log('transferCode:', transferCode);
-        const token = await obtenerNuevoToken();
+        const token = await obtenerNuevoToken(transferCode);
         const apiUrl = `https://prod.developers-test.currencybird.cl/payment?email=${transferCode}&transferCode=${transferCode}`
         const response = await axios.get(apiUrl,{
             headers: {
@@ -100,9 +100,9 @@ async function obtenerGet (transferCode: string) {
     };
 
 // Función para obtener un nuevo token de acceso
-async function obtenerNuevoToken() {
+async function obtenerNuevoToken(transferCode) {
     try {
-      const tokenUrl = 'https://prod.developers-test.currencybird.cl/token?email=franco.schiaffino@uc.cl';
+      const tokenUrl = `https://prod.developers-test.currencybird.cl/token?email=${transferCode}`;
       const response = await axios.get(tokenUrl);
   
       console.log('Estado de la respuesta:', response.status);
@@ -135,8 +135,8 @@ app.post('/enviar-pago', async (req: Request, res: Response) => {
         transferCode: `${transferCode}`,
         amount: amount,
     }
-    const token = await obtenerNuevoToken();
-    const apiUrl = "https://prod.developers-test.currencybird.cl/payment?email=franco.schiaffino@uc.cl&transferCode=franco.schiaffino@uc.cl"
+    const token = await obtenerNuevoToken(transferCode);
+    const apiUrl = `https://prod.developers-test.currencybird.cl/payment?email=${transferCode}&transferCode=${transferCode}`
     const response = await axios.post(apiUrl, data,{
         headers: {
             Authorization: token,
