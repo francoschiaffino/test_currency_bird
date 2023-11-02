@@ -55,8 +55,8 @@ sequelize.sync();
 // Endpoint para obtener información de un pago en GeneralPayment
 app.get('/obtener-informacion-pago', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const email = 'franco.schiaffino@uc.cl';
-        const transferCode = 'franco.schiaffino@uc.cl';
+        const email = req.query.email;
+        const transferCode = req.query.transferCode;
         if (!email || !transferCode) {
             return res.status(400).send('Faltan parámetros en la solicitud.');
         }
